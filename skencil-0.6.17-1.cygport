@@ -1,0 +1,18 @@
+inherit python
+
+DESCRIPTION="Ineractive vector drawing application"
+HOMEPAGE="http://www.skencil.org/"
+SRC_URI="mirror://sourceforge/sketch/${P}.tar.gz"
+
+src_compile() {
+	lndirs
+	cd ${B}
+	${PYTHON} setup.py configure --with-nls || error "setup.py configure failed"
+	${PYTHON} setup.py build || error "setup.py build failed"
+}
+
+src_install() {
+	cd ${B}
+	${PYTHON} setup.py install --prefix=/usr --dest-dir=${D} || error "setup.py install failed"
+	python_optimize /usr/lib/${P}/{Lib,Plugins,Script,Sketch}
+}
